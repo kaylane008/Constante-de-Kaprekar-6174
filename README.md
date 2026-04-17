@@ -1,0 +1,1 @@
+# Constante-de-Kaprekar-6174
