@@ -1,59 +1,59 @@
-def validar_entrada(num_str):
-    # Validação de tipo (inteiro positivo)
-    if not num_str.isdigit():
-        print("Erro: o valor informado não é um número inteiro positivo.")
-        return False
+# Entrada
+n = int(input("Digite 4 números distintos: "))
 
-    num = int(num_str)
+# 1. Validação: positivo
+if n <= 0:
+    print("Erro: o número deve ser positivo.")
 
-    # Validação de faixa (0 a 9999)
-    if num < 0 or num > 9999:
-        print("Erro: o número deve estar entre 0000 e 9999.")
-        return False
+# 2. Validação de faixa
+elif n > 9999:
+    print("Número inválido: deve ter até 4 dígitos.")
 
-    # Completar com zeros à esquerda para garantir 4 dígitos
-    num_str = num_str.zfill(4)
+else:
+    # Extrair dígitos
+    d1 = n // 1000
+    d2 = (n % 1000) // 100
+    d3 = (n % 100) // 10
+    d4 = n % 10
 
-    # Validação de repetição de dígitos
-    contagem = {}
-    for d in num_str:
-        contagem[d] = contagem.get(d, 0) + 1
+    # 3. Validação de repetição
+    if (d1 == d2 == d3) or (d1 == d2 == d4) or (d1 == d3 == d4) or (d2 == d3 == d4):
+        print("Número possui muitos dígitos repetidos.")
 
-    if max(contagem.values()) >= 3:
-        print("Erro: o número possui muitos dígitos repetidos.")
-        return False
+    else:
+        print("\nNúmero informado:", n)
+        iteracao = 0
 
-    return True
+        while n != 6174:
 
+            d1 = n // 1000
+            d2 = (n % 1000) // 100
+            d3 = (n % 100) // 10
+            d4 = n % 10
 
-def kaprekar(num_str):
-    print(f"Número informado: {num_str}\n")
+            # Ordenação
+            if d1 > d2:
+                d1, d2 = d2, d1
+            if d1 > d3:
+                d1, d3 = d3, d1
+            if d1 > d4:
+                d1, d4 = d4, d1
+            if d2 > d3:
+                d2, d3 = d3, d2
+            if d2 > d4:
+                d2, d4 = d4, d2
+            if d3 > d4:
+                d3, d4 = d4, d3
 
-    iteracao = 1
+            ndc = d1*1000 + d2*100 + d3*10 + d4
+            ndd = d4*1000 + d3*100 + d2*10 + d1
 
-    while True:
-        # Ordenar dígitos
-        asc = ''.join(sorted(num_str))          # crescente
-        desc = ''.join(sorted(num_str, reverse=True))  # decrescente
+            resultado = ndd - ndc
 
-        ndc = int(asc)
-        ndd = int(desc)
+            iteracao += 1
 
-        resultado = ndd - ndc
+            print(f"Iteração {iteracao}: {ndd:04d} - {ndc:04d} = {resultado:04d}")
 
-        print(f"Iteração {iteracao}: {desc} - {asc} = {str(resultado).zfill(4)}")
+            n = resultado
 
-        if resultado == 6174:
-            break
-
-        # Preparar próxima iteração
-        num_str = str(resultado).zfill(4)
-        iteracao += 1
-
-
-# Programa principal
-entrada = input("Digite um número de até 4 dígitos: ")
-
-if validar_entrada(entrada):
-    entrada = entrada.zfill(4)
-    kaprekar(entrada)# Constante-de-Kaprekar-6174
+        print(f"\nConstante de Kaprekar (6174) atingida em {iteracao} iterações.")
